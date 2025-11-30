@@ -439,9 +439,9 @@ class DrawingContext {
     this.cx1 = this.cx0;
     this.cy1 = this.cy0 + 2.0 * this.outerRadius + this.margin;
     this.dotRadius = 1.0 * scale;
-    this.coloredSectorRadius = 30.5 * scale;
+    this.sectorThickness = 3 * scale;
+    this.coloredSectorRadius = this.outerRadius + 0.5 * this.sectorThickness;
     this.sectorColors = colorSequence(this.stateCount);
-    this.sectorThickness = 2 * scale;
     this.width = 2 * (this.margin + this.outerRadius);
     this.textY = 3 * this.margin + 4 * this.outerRadius;
     this.baseHeight = this.textY + this.margin;
@@ -475,7 +475,8 @@ class DrawingContext {
     );
     dst.setAttribute('fill', 'none');
     dst.setAttribute('stroke', this.sectorColors[index]);
-    dst.setAttribute('stroke-with', this.sectorThickness);
+    console.log('Sector thickness', this.sectorThickness);
+    dst.setAttribute('stroke-width', this.sectorThickness);
     this.svg.appendChild(dst);
   }
 
