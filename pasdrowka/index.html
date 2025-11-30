@@ -1,0 +1,59 @@
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <title>Pasdrówka: A cute password manager</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href='https://fonts.googleapis.com/css?family=Nunito' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Fira Code' rel='stylesheet'>
+  </head>
+  <body>
+    <div id="content">
+      <div id="info" class="panel">
+        <h1>Pasdrówka: A cute password manager</h1>
+        <p>Pasdrówka is a <emph>non-electronic</emph> and <emph>mechanical</emph> password manager that can be used to convert a short password hint to a strong password. It is inspired by, and similar in spirit to, <a href="https://www.grc.com/offthegrid.htm">Off The Grid</a>. When printed on paper, it is smaller than Off The Grid and fits in the hand. However, it is not as secure as Off The Grid because its key is shorter and the state machine has fewer states. Alan Turing would probably hack it easily. But it might be more secure than what you currently use.</p>
+      </div>
+      <div id="main">
+        <div id="mainconfig" class="panel">
+          <h2>Configuration</h2>
+          <label for="inputsymbols">Input symbols</label>
+          <textarea rows="2" id="inputsymbols"></textarea>
+          <p class="error" id="inputerror"></p>
+          <label for="outputsymbols">Output symbols</label>
+          <textarea rows="4" id="outputsymbols"></textarea>
+          <p class="error" id="outputerror"></p>
+          <label for="strlen">Output string length</label>
+          <input type="number" id="strlen" min="1" max="3" value="2">
+          <p class="error" id="strlenerror"></p>
+          <h2>Spec</h2>
+          <label for="inputspec">Input spec</label>
+          <textarea rows="2" id="inputspec"></textarea>
+          <label for="outputspec">Output spec</label>
+          <textarea rows="4" id="outputspec"></textarea>
+          <p class="error" id="specError"></p>
+          <div id="buttonpanel">
+            <button onclick="generate()" id="genbutton">Generate</button>
+            <button id="printBtn">Print</button>
+            <button id="downloadBtn">Download</button>
+            <button id="reset">Reset</button>
+          </div>    
+        </div>
+        <div id="mainoutput" class="panel">
+          <h2>Result</h2>
+          <emph>Preview:</emph>
+          <svg width="210mm" height="297mm" viewBox="0 0 210 297" xmlns="http://www.w3.org/2000/svg" id="drawing">
+            <rect x="0" y="0" width="210" height="297" fill="white"/>
+          </svg>
+        </div>
+      </div>
+      <div class="panel">
+        <p><emph class="miniheader">Creating your own pasdrówka: </emph>Specify input symbols, output symbols, output string length and press <emph>Generate</emph>. Then press <emph>Print</emph> and print it to a paper. You can use <emph>Reset</emph> to restore the default settings. With a pair of scissors, cut out the upper circle (the "input disk") and cut out the "window" along the edge where there is no symbol. Cut out the lower circle (the "output disk"). Optionally laminate the input disk with transparent plastic for to resist wear and tear. Glue the output disk to a rigid surface such as a metalic lid of a jar. Drill holes in the middle of the input disk and output disk. Place the input disk on top of the output disk and attach them with a common axis throught their holes. The input disk should be able to rotate on top of the output disk. The rotation of the input disk with respect to the output disk defines the <emph>state</emph> of the pasdrówka.</p>
+        <p><emph class="miniheader">Encrypting a single symbol: </emph>Locate the symbol that you want to encrypt on the input disk. Observe the position of the input symbol using the colored pattern along the edge of the output disk. Rotate the window of the input disk to the previous position of the input symbol making use of the colored pattern as a reference. The encrypted output is the symbols revealed through the window of the input disk. The rotation of the pasdrówka is the new state.</p>
+        <p><emph class="miniheader">Generating a password: </emph>Use for example the name of the service as a password hint. If the service is <emph>Gitlab</emph>, then use <tt>GITLAB</tt> as your password hint. Start by encrypting each symbol of the password hint, one by one, as explained in the previous section but ignore the output symbols. This will initialize the pasdrówka to a state that depends on all the input symbols. Then encrypt the password hint again while recording the output symbols. Repeat as many times as necessary to generate a long enough password. Season to taste with salt and pepper.</p>
+      </div>
+    </div>
+    <script src="impl.js"></script>
+  </body>
+</html>
