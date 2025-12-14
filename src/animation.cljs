@@ -46,3 +46,14 @@
         ymapper (line-mapper ymap)]
     (fn [[x y & rest]]
       (into [(xmapper x) (ymapper y)] rest))))
+
+(def default-settings
+  {:plane-count 20
+   :ref-pts [[0 0 0]
+             [1 1 1]]
+   :min-period-time 10
+   :max-period-time 5})
+
+(defn initialize-state [settings]
+  {:bounding-box (bounding-box (:ref-pts settings))
+   :planes []})
