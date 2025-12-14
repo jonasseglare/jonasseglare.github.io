@@ -1,0 +1,17 @@
+{
+  "name": "jonasseglare-github-io",
+  "version": "1.0.0",
+  "description": "Personal web page",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "rollup-plugin-visualizer": "6.0.5",
+    "vite": "7.2.7",
+    "vitest": "4.0.15"
+  },
+  "dependencies": {
+    "squint-cljs": "0.9.182"
+  }
+}
