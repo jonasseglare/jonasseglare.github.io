@@ -1,4 +1,4 @@
-(ns polyhedron
+(ns linalg
   (:require [squint.string :as str]))
 
 (defn dot-product [a b]
