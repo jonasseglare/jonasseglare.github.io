@@ -11,6 +11,9 @@
 (defn add-vectors [a b]
   (mapv (fn [a b] (+ a b)) a b))
 
+(defn sub-vector [a b]
+  (mapv (fn [a b] (- a b)) a b))
+
 (defn plane [normal offset]
   {:normal normal
    :offset offset})
@@ -27,6 +30,23 @@
 
 (defn squared-norm [x]
   (dot-product x x))
+
+(defn norm [x]
+  (Math/sqrt (squared-norm x)))
+
+(defn normalize [x]
+  (scale-vector (/ 1.0 (norm x)) x))
+
+(defn normalize-or-nil [x]
+  (let [k (norm x)]
+    (when (< 0 k)
+      (scale-vector (/ 1.0 k) x))))
+
+(defn orthogonalize [src-vector other-unit-vector]
+  (sub-vector src-vector
+              (scale-vector
+               (dot-product src-vector other-unit-vector)
+               other-unit-vector)))
 
 (defn point-on-plane [plane]
   (let [lambda (/ (:offset plane)

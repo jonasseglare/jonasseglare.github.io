@@ -1,4 +1,5 @@
-(ns animation)
+(ns animation
+  (:require [linalg :as linalg]))
 
 (defn line-km [k m]
   {:k k :m m})
@@ -54,6 +55,46 @@
    :min-period-time 10
    :max-period-time 5})
 
-(defn initialize-state [settings]
-  {:bounding-box (bounding-box (:ref-pts settings))
-   :planes []})
+(defn bounded-random [lower upper]
+  (+ lower (* (- upper lower)
+              (Math/random))))
+
+(defn rand-minus-plus-1 [x]
+  (bounded-random -1 1))
+
+(defn random-vector-3d []
+  (loop []
+    (let [x [(rand-minus-plus-1)
+             (rand-minus-plus-1)
+             (rand-minus-plus-1)]]
+      (if (< (linalg/squared-norm x) 1.0)
+        x
+        (recur)))))
+
+(defn random-unit-vector-3d [vector-generator]
+  (loop []
+    (let [x (vector-generator)
+          y (linalg/normalize-or-nil x)]
+      (or y (recur)))))
+
+(defn random-subspace []
+  (let [x (random-unit-vector-3d random-vector-3d)
+        y (random-unit-vector-3d
+           #(linalg/orthogonalize (random-vector-3d) x))]
+    [x y]))
+
+(defn initialize-state [{:keys [ref-pts plane-count min-period-time
+                                max-period-time]}]
+  {:pre [(seq ref-pts)
+         (number? plane-count)
+         (number? min-period-time)
+         (number? max-period-time)]}
+  {:bounding-box (bounding-box ref-pts)
+   :planes (into []
+                 (take plane-count)
+                 (repeatedly (fn []
+                               {:period-time (bounded-random
+                                              min-period-time
+                                              max-period-time)
+                                :offset [0 0 0]
+                                :subspace (random-subspace)})))})

@@ -9,9 +9,27 @@
         (-> (expect (linalg/dot-product [2 0] [0 2]))
             (.toBe 0))))
 
+(test "norm-test"
+      (do (-> (expect (linalg/squared-norm [3 4]))
+              (.toBe 25))
+          (-> (expect (linalg/norm [3 4]))
+              (.toBe 5))))
+
+(test "normalize-test"
+      (do (-> (expect (linalg/normalize [3 0]))
+              (.toEqual [1 0]))
+          (-> (expect (linalg/normalize-or-nil [3 0]))
+              (.toEqual [1 0]))
+          (-> (expect (nil? (linalg/normalize-or-nil [0 0])))
+              (.toBe true))))
+
+(test "orthogonalize"
+      (do (-> (expect (linalg/orthogonalize [9 7] [1 0]))
+              (.toEqual [0 7]))))
+
 (test "plane-test"
       (let [plane (linalg/plane-with-normal-at-point [1 0 0]
-                                                        [3 3 3])]
+                                                     [3 3 3])]
         (-> (expect (linalg/evaluate-plane plane [3 0 0]))
             (.toBe 0))
         (-> (expect (linalg/evaluate-plane plane [4 0 0]))
