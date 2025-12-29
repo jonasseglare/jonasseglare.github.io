@@ -56,11 +56,18 @@
 
 (test "initialize-state-test"
       (let [settings animation/default-settings
-            {:keys [planes bounding-box]}
-            (animation/initialize-state settings)]
+            {:keys [planes bounding-box] :as state}
+            (animation/initialize-state settings)
+            ]
         (-> (expect (boolean bounding-box))
             (.toBe true))
         (-> (expect (boolean (seq planes)))
             (.toBe true))
         (-> (expect (count planes))
-            (.toBe (:plane-count settings)))))
+            (.toBe (:plane-count settings)))
+        (dotimes [i 20]
+          (let [polyhedron (animation/polyhedron-from-state state i)]
+            (-> (expect (linalg/polyhedron? polyhedron))
+                (.toBe true))
+            (-> (expect (-> polyhedron :planes seq boolean))
+                (.toBe true))))))

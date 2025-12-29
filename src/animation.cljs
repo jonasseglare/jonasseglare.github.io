@@ -53,13 +53,14 @@
    :ref-pts [[0 0 0]
              [1 1 1]]
    :min-period-time 10
-   :max-period-time 5})
+   :max-period-time 5
+   :tol 1.0e-6})
 
 (defn bounded-random [lower upper]
   (+ lower (* (- upper lower)
               (Math/random))))
 
-(defn rand-minus-plus-1 [x]
+(defn rand-minus-plus-1 []
   (bounded-random -1 1))
 
 (defn random-vector-3d []
@@ -84,17 +85,46 @@
     [x y]))
 
 (defn initialize-state [{:keys [ref-pts plane-count min-period-time
-                                max-period-time]}]
+                                max-period-time tol]}]
   {:pre [(seq ref-pts)
          (number? plane-count)
          (number? min-period-time)
          (number? max-period-time)]}
   {:bounding-box (bounding-box ref-pts)
-   :planes (into []
-                 (take plane-count)
-                 (repeatedly (fn []
-                               {:period-time (bounded-random
-                                              min-period-time
-                                              max-period-time)
-                                :offset [0 0 0]
-                                :subspace (random-subspace)})))})
+   :tol tol
+   :planes (mapv (fn [plane-index]
+                   {:period-time (bounded-random
+                                  min-period-time
+                                  max-period-time)
+                    :offset [0 0 0]
+                    :key (str "plane" plane-index)
+                    :subspace (random-subspace)})
+                 (range plane-count))})
+
+(defn plane-at-time [])
+
+(def two-pi (* 2.0 Math/PI))
+
+(defn polyhedron-from-state [{:keys [planes tol]} time-seconds]
+  {:pre [(number? tol)
+         (number? time-seconds)]}
+  (linalg/polyhedron
+   (into {}
+         (map (fn [{:keys [period-time offset key subspace]}]
+                (let [omega (/ two-pi period-time)
+                      phi (* omega time-seconds)
+                      cos-phi (Math/cos phi)
+                      sin-phi (Math/sin phi)
+                      [x-axis y-axis] subspace
+                      unit-vec (linalg/add-vectors
+                                offset
+                                (linalg/add-vectors
+                                 (linalg/scale-vector
+                                  cos-phi x-axis)
+                                 (linalg/scale-vector
+                                  sin-phi y-axis)))
+                      plane (linalg/plane-with-normal-at-point
+                             (linalg/scale-vector -1 unit-vec)
+                             unit-vec)]
+                  [key plane]))) planes)
+   tol))

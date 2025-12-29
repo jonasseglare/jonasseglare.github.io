@@ -141,6 +141,7 @@
         (< lower-lambda upper-lambda))))
 
 (defn neighbor-keys? [a b]
+  {:pre [a b]}
   (let [[a0 a1 :as x] (decompose-key a)
         [b0 b1 :as y] (decompose-key b)]
     (assert (= 2 (count x)))
@@ -161,6 +162,7 @@
           (let [k (peek result)
                 k2 (first (filter #(neighbor-keys? k %)
                                   remaining))]
+            (assert k2)
             (recur (conj result k2) (disj remaining k2))))))))
 
 (defn plane-corner-loop [plane-key all-corners]
@@ -184,9 +186,9 @@
        :plane plane
        :corner-loop corner-loop})))
 
-(defn inside-polyhedron? [pos plane-map]
-  (not-any? (fn [[_ plane]]
-              (neg? (evaluate-plane plane pos)))
+(defn inside-polyhedron? [pos plane-map tol]
+  (every? (fn [[_ plane]]
+              (< (- tol) (evaluate-plane plane pos)))
             plane-map))
 
 (defn polyhedron [plane-map tol]
@@ -209,7 +211,7 @@
                                         bounded-line :upper)]))
                             (remove nil?)
                             (filter (fn [[k pos]]
-                                      (inside-polyhedron? pos plane-map))))
+                                      (inside-polyhedron? pos plane-map tol))))
                       bounded-lines)]
     {:corners corners
      :planes (->> plane-map
@@ -217,3 +219,6 @@
                         (keep (fn [[plane-key plane]]
                                 (decorate-plane plane-key plane corners))))
                   (sort-by :key))}))
+
+(defn polyhedron? [x]
+  (contains? x :corners))
