@@ -4,7 +4,10 @@ import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   test: {
-    include: ['docs/**/**test.mjs', 'docs/**/**test.jsx'],
+    include: ['build/**/**test.mjs'],
+  },
+  build: {
+    outDir: 'docs',
   },
   plugins: [visualizer({ open: false, filename: 'bundle-visualization.html' })],
 });

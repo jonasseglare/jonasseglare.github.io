@@ -101,8 +101,6 @@
                     :subspace (random-subspace)})
                  (range plane-count))})
 
-(defn plane-at-time [])
-
 (def two-pi (* 2.0 Math/PI))
 
 (defn polyhedron-from-state [{:keys [planes tol]} time-seconds]
@@ -128,3 +126,4 @@
                              unit-vec)]
                   [key plane]))) planes)
    tol))
+

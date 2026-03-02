@@ -210,7 +210,7 @@
                                        (bounded-line-corner
                                         bounded-line :upper)]))
                             (remove nil?)
-                            (filter (fn [[k pos]]
+                            (filter (fn [[_k pos]]
                                       (inside-polyhedron? pos plane-map tol))))
                       bounded-lines)]
     {:corners corners
