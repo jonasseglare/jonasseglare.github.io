@@ -47,6 +47,9 @@
 
 (def odd-plane-state (atom nil))
 
+(defn process-corner-positions [positions]
+  positions)
+
 (defn render-background [settings]
   (let [time-seconds (-> (js/Date.) .getTime (* 0.001))
         polyhedron (animation/polyhedron-from-state state time-seconds)
@@ -80,7 +83,7 @@
     ;;myContext.filter = 'blur(10px)';
     (doseq [{:keys [corner-loop light-intensity key]} planes-to-render
             :when (<= 3 (count corner-loop))
-            :let [[start-corner & rest-corners] corner-loop
+            :let [[start-pos & rest-pos] (process-corner-positions (mapv (comp proj :position) corner-loop))
                   base-color (get settings
                                   (if (= key odd-key) :odd-color :main-color))
                   color (-> light-intensity
@@ -88,10 +91,9 @@
                             (saturate (:saturation settings)))]]
       (set! (.-fillStyle ctx) (rgb-expr color))
       (.beginPath ctx)
-      (let [[x y] (proj (:position start-corner))]
+      (let [[x y] start-pos]
         (.moveTo ctx x y))
-      (doseq [corner rest-corners
-              :let [[x y] (proj (:position corner))]]
+      (doseq [[x y] rest-pos]
         (.lineTo ctx x y))
       (.closePath ctx)
       (.fill ctx))))
