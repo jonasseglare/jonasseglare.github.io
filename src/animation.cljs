@@ -48,12 +48,12 @@
     (fn [[x y & rest]]
       (into [(xmapper x) (ymapper y)] rest))))
 
-(def ref-period-time 40)
+(def ref-period-time 80)
 
 (def default-settings
   {:plane-count 20
    :ref-pts [[0 -1.5 -2]
-             [1.2 0.5 2]]
+             [1.2 0.7 2]]
    :min-period-time ref-period-time
    :max-period-time (* 2 ref-period-time)
    :tol 1.0e-6})
