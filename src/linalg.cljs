@@ -8,8 +8,11 @@
       sum
       (recur (+ sum (* (nth a i) (nth b i))) (inc i)))))
 
-(defn add-vectors [a b]
+(defn add-vectors2 [a b]
   (mapv (fn [a b] (+ a b)) a b))
+
+(defn add-vectors [vectors]
+  (reduce add-vectors2 vectors))
 
 (defn sub-vector [a b]
   (mapv (fn [a b] (- a b)) a b))
@@ -25,8 +28,14 @@
 (defn plane-with-normal-at-point [normal point]
   (plane normal (dot-product normal point)))
 
+(defn rotate90-2d [[x y]]
+  [(- y) x])
+
 (defn scale-vector [lambda X]
   (mapv #(* lambda %) X))
+
+(defn average [vectors]
+  (scale-vector (/ 1.0 (count vectors)) (add-vectors vectors)))
 
 (defn squared-norm [x]
   (dot-product x x))
@@ -78,8 +87,8 @@
          denom))))
 
 (defn evaluate-line-point [line lambda]
-  (add-vectors (scale-vector lambda (:direction line))
-               (:point line)))
+  (add-vectors2 (scale-vector lambda (:direction line))
+                (:point line)))
 
 (defn intersect-planes [plane-a plane-b tol]
   {:pre [(number? tol)]}
@@ -219,6 +228,24 @@
                         (keep (fn [[plane-key plane]]
                                 (decorate-plane plane-key plane corners))))
                   (sort-by :key))}))
+
+(defn- common-keys [a b]
+  (set (for [x a
+             y b
+             :when (= x y)]
+         x)))
+
+(defn polyhedron-edges [{:keys [corners]}]
+  {:pre [(map? corners)]}
+  (let [corner-ks (mapv (juxt identity decompose-key) (sort (keys corners)))]
+    (for [[x a] corner-ks
+          [y b] corner-ks
+          :when (neg? (compare a b))
+          :let [common-ks (common-keys a b)]
+          :when (<= 2 (count common-ks))]
+      {:src x
+       :dst y
+       :shared-planes common-ks})))
 
 (defn polyhedron? [x]
   (contains? x :corners))

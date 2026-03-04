@@ -47,12 +47,11 @@
 
 (def odd-plane-state (atom nil))
 
-(defn process-corner-positions [positions]
-  positions)
+(println "MOD" (mod -1 7) (mod 8 7))
 
 (defn render-background [settings]
   (let [time-seconds (-> (js/Date.) .getTime (* 0.001))
-        polyhedron (animation/polyhedron-from-state state time-seconds)
+        {:keys [planes corners] :as polyhedron} (animation/polyhedron-from-state state time-seconds)
         ;;_ (println polyhedron)
         width (.-clientWidth background-element)
         height (.-clientHeight background-element)
@@ -69,26 +68,47 @@
                                                   :light-intensity
                                                   (compute-light-intensity normal
                                                                            settings))))))
-                               (:planes polyhedron))
+                               planes)
         visible-ks (into #{} (map :key) planes-to-render)
         [odd-key] (swap! odd-plane-state select-odd-plane polyhedron visible-ks)
+        planes-to-render-map (into {}
+                                   (map (fn [{:keys [key light-intensity] :as plane-data}]
+                                          [key (let [base-color (get settings
+                                                                     (if (= key odd-key) :odd-color :main-color))
+                                                     color (-> light-intensity
+                                                               (linalg/scale-vector base-color)
+                                                               (saturate (:saturation settings)))]
+                                                 (assoc plane-data :color color))]))
+                                   planes-to-render)
+        
         ctx (.getContext background-element "2d")]
     (println odd-key)
     (set! (.-width background-element) width)
     (set! (.-height background-element) height)
     (set! (.-fillStyle ctx) (rgb-expr (:background-color settings)))
-    (set! (.-lineWidth ctx) 0)
     (.fillRect ctx 0 0 width height)
-    (set! (.-filter ctx) "blur(7px)")
-    ;;myContext.filter = 'blur(10px)';
-    (doseq [{:keys [corner-loop light-intensity key]} planes-to-render
+
+    #_(set! (.-filter ctx) "blur(7px)")
+    
+
+    
+    (set! (.-lineWidth ctx) 3)
+    (doseq [{:keys [src dst shared-planes]} (linalg/polyhedron-edges polyhedron)
+            :when (every? visible-ks shared-planes)
+            :let [[x0 y0] (proj (get corners src))
+                  [x1 y1] (proj (get corners dst))
+                  color (linalg/average (mapv #(:color (get planes-to-render-map %)) shared-planes))]]
+      (set! (.-strokeStyle ctx) (rgb-expr color))
+      (.beginPath ctx)
+      (.moveTo ctx x0 y0)
+      (.lineTo ctx x1 y1)
+      (.stroke ctx))    
+
+    (set! (.-lineWidth ctx) 0)
+    (doseq [[_ {:keys [corner-loop color]}] planes-to-render-map
             :when (<= 3 (count corner-loop))
-            :let [[start-pos & rest-pos] (process-corner-positions (mapv (comp proj :position) corner-loop))
-                  base-color (get settings
-                                  (if (= key odd-key) :odd-color :main-color))
-                  color (-> light-intensity
-                            (linalg/scale-vector base-color)
-                            (saturate (:saturation settings)))]]
+            :let [[start-pos & rest-pos] (mapv (comp proj :position) corner-loop)
+                  ]]
       (set! (.-fillStyle ctx) (rgb-expr color))
       (.beginPath ctx)
       (let [[x y] start-pos]
@@ -96,7 +116,9 @@
       (doseq [[x y] rest-pos]
         (.lineTo ctx x y))
       (.closePath ctx)
-      (.fill ctx))))
+      (.fill ctx))
+
+    ))
 
 (js/setInterval #(render-background settings)
                 (:render-interval-ms settings))

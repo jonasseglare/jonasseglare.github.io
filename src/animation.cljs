@@ -51,7 +51,7 @@
 (def ref-period-time 80)
 
 (def default-settings
-  {:plane-count 20
+  {:plane-count 40
    :ref-pts [[0 -1.5 -2]
              [1.2 0.7 2]]
    :min-period-time ref-period-time
@@ -116,9 +116,9 @@
                       cos-phi (Math/cos phi)
                       sin-phi (Math/sin phi)
                       [x-axis y-axis] subspace
-                      unit-vec (linalg/add-vectors
+                      unit-vec (linalg/add-vectors2
                                 offset
-                                (linalg/add-vectors
+                                (linalg/add-vectors2
                                  (linalg/scale-vector
                                   cos-phi x-axis)
                                  (linalg/scale-vector

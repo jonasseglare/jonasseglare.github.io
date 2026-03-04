@@ -24,8 +24,8 @@
               (.toBe true))))
 
 (test "orthogonalize"
-      (do (-> (expect (linalg/orthogonalize [9 7] [1 0]))
-              (.toEqual [0 7]))))
+      (-> (expect (linalg/orthogonalize [9 7] [1 0]))
+          (.toEqual [0 7])))
 
 (test "plane-test"
       (let [plane (linalg/plane-with-normal-at-point [1 0 0]
@@ -109,7 +109,18 @@
                     :d (linalg/plane-with-normal-at-point
                         [-1 -1 -1]
                         [1 0 0])}
-                   tol)]
+                   tol)
+                xedges (vec (linalg/polyhedron-edges x))]
             (-> (expect x)
-                (.toEqual y)))))
-
+                (.toEqual y))
+            (-> (expect (mapv :src xedges))
+                (.toEqual [ "a/b/c", "a/b/c", "a/b/c", "a/b/d", "a/b/d", "a/c/d" ]))
+            (-> (expect (mapv :dst xedges))
+                (.toEqual [ "a/b/d", "a/c/d", "b/c/d", "a/c/d", "b/c/d", "b/c/d" ]))
+            (-> (expect (mapv :shared-planes xedges))
+                (.toEqual [ #{"a", "b" },
+                            #{"a", "c" },
+                            #{"b", "c" },
+                            #{"a", "d" },
+                            #{"b", "d" },
+                            #{"c", "d" }])))))
