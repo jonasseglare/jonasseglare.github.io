@@ -1,5 +1,12 @@
+PASDROWKA_FILES = public/pasdrowka/index.html public/pasdrowka/style.css public/pasdrowka/impl.js
+PASDROWKA_BASE = https://raw.githubusercontent.com/jonasseglare/pasdrowka/master
+
 .PHONY: build
 
-build:
-	bb build && cp ../pasdrowka/index.html docs/pasdrowka/. && cp ../pasdrowka/style.css docs/pasdrowka/. && cp ../pasdrowka/impl.js docs/pasdrowka/.
+build: $(PASDROWKA_FILES)
+	bb build
+
+$(PASDROWKA_FILES): public/pasdrowka/%:
+	mkdir -p public/pasdrowka
+	curl -fsSL $(PASDROWKA_BASE)/$* -o $@
 
