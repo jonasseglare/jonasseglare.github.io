@@ -5,8 +5,8 @@ html {
 }
 
 h1 {
-    font-family: "Computer Modern Typewriter";
-    font-style: italic bold;
+    font-family: "Pacifico", "Computer Modern Typewriter", cursive;
+    font-weight: 400;
     color: rgb(0, 137, 204); // (* 171 0.8) (* 255 0.8)
 }
 
@@ -45,11 +45,14 @@ body {
 }
 
 #intro {
-    padding: 1rem;
+    padding: 3rem;
 }
 
 #intro img {
     width: 8em;
+    margin: 0em 0em 2em 2em;
+    //margin-left: 2em;
+    //margin-bottom: 2em;
     float: right;
 }
 
