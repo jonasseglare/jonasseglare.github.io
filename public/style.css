@@ -33,6 +33,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    //align-items: center;
 }
 
 .card {
@@ -53,9 +54,8 @@ body {
 .cardbox > a {
     display: block;
     flex: 1;
-    //max-width: 13rem;
-    //min-width: 13;
     width: 13rem;
+    max-width: 13rem;
     min-height: 12rem;
     display: flex;
     justify-content: center;
