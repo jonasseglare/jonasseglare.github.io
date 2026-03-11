@@ -28,7 +28,7 @@ body {
     margin: 0;
     border: 0;
     flex: 1;
-    max-width: 42rem;
+    max-width: 48rem;
 
     display: flex;
     flex-direction: column;
@@ -41,14 +41,20 @@ body {
     border: 0;
     border-radius: 0.5em;
     background-color: rgba(255, 255, 255, 0.85);
+    padding: 1rem;
+}
+
+#intro {
+    padding: 1rem;
+}
+
+#intro img {
+    width: 8em;
+    float: right;
 }
 
 #content article h1 {
     text-align: center;
-}
-
-#content article {
-    padding: 1rem;
 }
 
 .cardbox > a {
