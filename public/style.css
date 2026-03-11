@@ -4,6 +4,12 @@ html {
     height: 100%;
 }
 
+h1 {
+    font-family: "Computer Modern Typewriter";
+    font-style: italic bold;
+    color: rgb(0, 137, 204); // (* 171 0.8) (* 255 0.8)
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -47,19 +53,27 @@ body {
 .cardbox > a {
     display: block;
     flex: 1;
-    max-width: 13rem;
+    //max-width: 13rem;
+    //min-width: 13;
+    width: 13rem;
     min-height: 12rem;
     display: flex;
     justify-content: center;
     align-content: center;
     flex-direction: column;
     text-decoration: none;
-    text-color: black;
+    flex-wrap: wrap;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.cardbox > a:hover {
+    background-color: white;
 }
 
 .cardbox > a > h1 {
     text-align: center;
     font-size: 1.5em;
+    margin: 1em;
 }
 
 .cardbox {
