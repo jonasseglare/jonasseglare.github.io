@@ -33,7 +33,6 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    //align-items: center;
 }
 
 .card {
@@ -51,8 +50,6 @@ body {
 #intro img {
     width: 8em;
     margin: 0em 0em 2em 2em;
-    //margin-left: 2em;
-    //margin-bottom: 2em;
     float: right;
 }
 
