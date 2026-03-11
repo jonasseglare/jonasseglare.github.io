@@ -68,7 +68,7 @@ body {
     align-content: center;
     flex-direction: column;
     text-decoration: none;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 .cardbox > a:hover {
@@ -95,4 +95,81 @@ body {
     height: 100vh;
     z-index: -1;
     filter: blur(4px);
+}
+
+.cvsection {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin: 1rem 0rem;
+    border-style: solid; // double;
+    border-width: 0px 0px 0px 0.5rem;
+    border-color: white;
+    border-radius: 2rem;
+}
+
+.cvsection > h1 {
+    //transform: rotate(-90deg);
+    //"Computer Modern Typewriter"
+
+    margin: 0;
+    padding: 0;
+    writing-mode: sideways-lr;
+    color: white;
+    -webkit-text-stroke: 7px black;
+    paint-order: stroke fill;
+    flex: 0;
+}
+
+.cvcard {
+    background-color: white;
+    margin: 0.5rem;
+    border: 0;
+    border-radius: 0.5em;
+    padding: 1rem;
+    font-size: 1.2rem;
+    //display: flex;
+    //flex-direction: column;
+}
+
+.cvcardheader {
+    padding: 0;
+    margin: 0 0 1em;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+}
+
+.cvcarddetails {
+    font-family: "Computer Modern Typewriter";
+    flex: 0.1;
+    border: 1px solid red;
+}
+
+.cvcardheader > h2 {
+    border: 1px solid red;
+    flex: 1;
+    margin: 0;
+    padding: 0;
+    font-size: 1.2em;
+    font-family: "Computer Modern Typewriter";
+    color: rgb(0, 137, 204); // (* 171 0.8) (* 255 0.8)                             
+}
+
+#backbutton {
+    text-decoration: none;
+    color: rgb(0, 137, 204);
+    background-color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    font-size: 1.5rem;
+    font-family: "Pacifico", "Computer Modern Typewriter", cursive;
+    position: absolute;
+    top: 1em;
+    left: 1em;
+}
+
+#backbutton:hover {
+    background-color: white;
 }
