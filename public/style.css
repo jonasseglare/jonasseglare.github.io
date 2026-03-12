@@ -97,9 +97,22 @@ body {
     filter: blur(4px);
 }
 
+#cvcontent {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    flex: 1;
+    max-width: 75rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .cvsection {
     margin: 0;
     padding: 0;
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: left;
@@ -124,38 +137,51 @@ body {
 }
 
 .cvcard {
+    flex: 1;
     background-color: white;
     margin: 0.5rem;
     border: 0;
     border-radius: 0.5em;
     padding: 1rem;
     font-size: 1.2rem;
-    //display: flex;
-    //flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 10em 7em;
 }
 
-.cvcardheader {
-    padding: 0;
-    margin: 0 0 1em;
-    display: flex;
-    flex-direction: row;
-    align-items: start;
-}
-
-.cvcarddetails {
-    font-family: "Computer Modern Typewriter";
-    flex: 0.1;
+.cvcard > h2 {
     border: 1px solid red;
-}
-
-.cvcardheader > h2 {
-    border: 1px solid red;
-    flex: 1;
+    width: 100%;
     margin: 0;
     padding: 0;
     font-size: 1.2em;
-    font-family: "Computer Modern Typewriter";
+    font-family: "Computer Modern Bright";
     color: rgb(0, 137, 204); // (* 171 0.8) (* 255 0.8)                             
+}
+
+.cvloc {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid red;
+    justify-content: start;
+    align-items: start;
+    font-family: "Computer Modern Bright";
+}
+
+.cvtime {
+    border: 1px solid red;
+    text-align: right;
+    font-family: "Computer Modern Bright";
+    font-weight: bold;
+    color: gray;
+}
+
+.cvdesc {
+    border: 1px solid red;
+    grid-column-start: 1;
+}
+
+.city {
+    color: gray;
 }
 
 #backbutton {
